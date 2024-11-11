@@ -1,0 +1,14 @@
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token%}
+    <h2>Tutor Register</h2>
+    firstname:<input type="text" name="firstname">
+    lastname:<input type="text" name="lastname">
+    username:<input type="text" name="username">
+    email:<input type="email" name="email">
+    password:<input type="password" name="password">
+    Adress:<input type="text" name="address">
+    Tutor:<input type="radio" name="tutor" value="True">
+    Student:<input type="radio" name="student" value="True">
+
+    <input type="submit"value="Register">
+</form>
