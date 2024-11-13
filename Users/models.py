@@ -50,8 +50,8 @@ class liveclass(models.Model):
 
 class studentattendance(models.Model):
     student_email=models.EmailField(max_length=100, unique=True,null=True, verbose_name ="Student Email") 
-    course = models.ForeignKey(available_Courses, related_name="courseattendance",on_delete=models.CASCADE,null=True)
-    #course_name = models.CharField(max_length = 50, null =True, verbose_name="Attendance Course Name")
+    course_code = models.ForeignKey(available_Courses, related_name="courseattendance",on_delete=models.CASCADE,null=True)
+    course_name = models.CharField(max_length = 50, null =True, verbose_name="Attendance Course Name")
     status = models.CharField(max_length=10,choices=(('P','PRESENT'),('A','ABSENT')),default='PRESENT')
     entry_time = models.DateTimeField( null=True, auto_now_add = True, auto_now = False,blank=True)
 

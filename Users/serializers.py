@@ -31,4 +31,4 @@ class liveclassSerializer(serializers.ModelSerializer):
 class studentattendanceSerializer(serializers.ModelSerializer):
       class Meta:
           model =studentattendance
-          fields =("student_email","course","status",)
+          fields =("student_email","course_code","course_name","status",)
