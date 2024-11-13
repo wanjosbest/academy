@@ -5,11 +5,11 @@ from .import views
 urlpatterns =[
     
      path("api/admin-login/",views.admin_login, name="admin_login"),
-     path("api/login-tutor/",views.tutor_login, name="user_login"),
+     path("api/tutor-login/",views.tutor_login, name="tutor_login"),
     
-     path("api/user-logout/",views.user_logout, name="logout"),
+     path("api/tutor-logout/",views.tutor_logout, name="tutor-logout"),
      #ADMIN CRUD USERS
-     path("api/register-tutor/",views.tutor_register, name="tutor_register"),
+     path("api/tutor-register/",views.tutor_register, name="tutor_register"),
      path("api/view-tutor/",views.view_tutor, name="view_tutor"),
      path("api/update-tutor/<str:id>/",views.update_tutor, name="update_user"),
      path("api/delete-tutor/<str:id>/",views.delete_tutor, name="delete_user"),

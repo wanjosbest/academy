@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 
+
 def index(request):
     if request.method=="POST":
         firstname=request.POST.get("firstname")
@@ -30,11 +31,23 @@ def index(request):
 @api_view(["POST"])
 def tutor_register(request):
     if request.method=="POST":
+        """
+        firstname=request.data.get("first_name")
+        lastname=request.data.get("last_name")
+        username=request.data.get("username")
+        email= request.data.get("email")
+        password=request.data.get("password")
+        address=request.data.get("address")
+        tutor=request.data.get("is_tutor")
+        student=request.data.get("is_student")
+        """
         serializer=REGAPISerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 #authenticated users to view users
 @api_view(["GET"])
 #@permission_classes([IsAuthenticated])
@@ -76,19 +89,21 @@ def tutor_login(request):
     if request.method == 'POST':
         username = request.data.get('username')
         password = request.data.get('password')
-
+        serializer=REGAPISerializer(data=request.data)
         user = None
        
         if not user:
             user = authenticate(username=username, password=password)
-        if user.is_tutor:
+        if user.is_authenticated:
+       # if user.is_tutor or user.is_student:
            login(request, user)
         if user:
             token, _ = Token.objects.get_or_create(user=user)
-            messages.info(request,"You have succesfully logged in")
             return Response({'token': token.key}, status=status.HTTP_200_OK,)
     return Response( status=status.HTTP_401_UNAUTHORIZED)
-    
+ 
+
+     
 #admin login
 @api_view(['POST'])
 def admin_login(request):
@@ -111,22 +126,24 @@ def admin_login(request):
     #user logout
 @api_view(['POST'])
 #@permission_classes([IsAuthenticated])
-def user_logout(request):
+def tutor_logout(request):
     if request.user.is_authenticated:
       if request.method == 'POST':
         try:
             # Delete the user's token to logout
             request.user.auth_token.delete()
-            return Response("you have successfully logged out")
+            return Response( status = status.HTTP_200_OK)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     return Response(status = status.HTTP_403_FORBIDDEN)
+
+
 ###course CRUD BY ADMIN
 
 @api_view(["POST"])
 #@permission_classes([IsAdminUser])
 def addCourses(request):
-    if request.user.is_tutor:
+    if request.user.is_superuser:
         if request.method=="POST":
          serializer=available_Courses_registrationserialization(data=request.data)
          if serializer.is_valid():
@@ -186,15 +203,16 @@ def tutorliveclasspost(request):
 # storing student attendance
 
 @api_view(["POST"])
+#@permission_classes([IsAdminUser])
 def attendance(request):
-   if request.user.is_student:
-      if request.method =="POST":
-         serializer = studentattendanceSerializer(data = request.data)
-         if serializer.is_valid():
-            serializer.save()
-            return Response( status = status.HTTP_200_OK)
-   return Response( status = status.HTTP_401_UNAUTHORIZED)
-
-
-   
-
+      if request.user.is_student: 
+         if request.method =="POST":
+            student_email = request.data.get("student_email")
+            #if the person signing attendance email is correct then
+            if request.user.email == student_email:
+               serializer = studentattendanceSerializer(data = request.data)
+               if serializer.is_valid():
+                  serializer.save()
+                  return Response(serializer.data,status = status.HTTP_201_CREATED)
+            return Response(status = status.HTTP_401_UNAUTHORIZED)
+      return Response(status = status.HTTP_401_UNAUTHORIZED)

@@ -7,7 +7,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     
     address=models.CharField(max_length=300,null=True,blank=True)
-    is_tutor=models.BooleanField(verbose_name="Tutor Status",null=True)
+    is_tutor=models.BooleanField(verbose_name="Tutor Status",null=True,default=True)
     # include this for a while
     is_student = models.BooleanField(verbose_name="Student Status",null=True)
 
@@ -23,7 +23,7 @@ class User(AbstractUser):
     
 ## add courses
 class available_Courses(models.Model):
-    tutor = models.ForeignKey(User, related_name="tutoraddcourse",on_delete=models.CASCADE,null=True)
+    author = models.ForeignKey(User, related_name="tutoraddcourse",on_delete=models.CASCADE,null=True)
     title=models.CharField(max_length=30,null=True)
     slug=models.SlugField(max_length=20,null=True)
 
@@ -43,17 +43,22 @@ class liveclass(models.Model):
      class_link=models.CharField(max_length=255,unique=True,null=True,blank=False)
      def __str__(self):
          return self.class_name
+     
 #student attendance 
+
 class studentattendance(models.Model):
-    title=models.TextField()
-   # course = models.ForeignKey(available_Courses, related_name="courseattendance",on_delete=models.CASCADE,null=True)
     student_email=models.EmailField(max_length=100, unique=True,null=True, verbose_name ="Student Email") 
-    Timeanddate = models.DateTimeField(auto_now=True, null=True, verbose_name="Time & date joined")
- 
+    course_code = models.ForeignKey(available_Courses, related_name="courseattendance",on_delete=models.CASCADE,null=True)
+    course_name = models.CharField(max_length = 50, null =True, verbose_name="Attendance Course Name")
+    status = models.CharField(max_length=10,choices=(('P','PRESENT'),('A','ABSENT')),default='PRESENT')
+    entry_time = models.DateTimeField( null=True, auto_now_add = True, auto_now = False,blank=True)
+
     def __str__(self):
-        return self.title
+       return self.course_name
     
     class Meta:
         verbose_name="studentattendance"
         verbose_name_plural="Student Attendance"
-    
+   
+  
+   
