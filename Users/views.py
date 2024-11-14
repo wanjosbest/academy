@@ -14,12 +14,11 @@ from django.views.decorators.csrf import csrf_protect
 
 #Admin CRUD USers
 #admin create user
-@api_view(["POST"])
 @csrf_protect
+@api_view(["POST"])
 def tutor_register(request):
     if request.method=="POST":
        useremail= request.data.get("email")
-
        serializer=REGAPISerializer(data=request.data)
        if serializer.is_valid():
           serializer.save()
@@ -28,9 +27,8 @@ def tutor_register(request):
 
 
 #authenticated users to view users
-@api_view(["GET"])
-#@permission_classes([IsAuthenticated])
 @csrf_protect
+@api_view(["GET"])
 def view_tutor(request):
     if request.user.is_authenticated:
       post=User.objects.all()
@@ -40,8 +38,8 @@ def view_tutor(request):
     return Response(status = status.HTTP_401_UNAUTHORIZED)
 # only admin can update users
 @api_view(["PUT"])
-@permission_classes([IsAdminUser])
 @csrf_protect
+@permission_classes([IsAdminUser])
 def update_tutor(request,id):
     post=User.objects.get(id=id)
     if request.method=="PUT":
@@ -53,9 +51,9 @@ def update_tutor(request,id):
     
 
 #only admin can delete users
+@csrf_protect
 @api_view(["DELETE"])
 #@permission_classes([IsAdminUser])
-@csrf_protect
 def delete_tutor(request,id):
       if request.user.is_superuser:
         post=User.objects.get(id=id)
@@ -66,8 +64,8 @@ def delete_tutor(request,id):
 
 
 #userlogin
+@csrf_protect
 @api_view(['POST'])
-
 def tutor_login(request):
     if request.method == 'POST':
         username = request.data.get('username')
@@ -87,8 +85,8 @@ def tutor_login(request):
 
      
 #admin login
+@csrf_protect
 @api_view(['POST'])
-
 def admin_login(request):
     if request.method == 'POST':
         username = request.data.get('username')
@@ -105,8 +103,8 @@ def admin_login(request):
             token, _ = Token.objects.get_or_create(user=user)
             return Response({'token': token.key}, status=status.HTTP_200_OK)
 #admin logout
-@api_view(['POST'])
 @csrf_protect
+@api_view(['POST'])
 def admin_logout(request):
     if request.user.is_superuser:
        if request.method == 'POST':
@@ -138,9 +136,8 @@ def tutor_logout(request):
 
 
 ###course CRUD BY ADMIN
-
-@api_view(["POST"])
 @csrf_protect
+@api_view(["POST"])
 #@permission_classes([IsAdminUser])
 def addCourses(request):
     if request.user.is_superuser:
@@ -152,20 +149,21 @@ def addCourses(request):
          return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(status = status.HTTP_401_UNAUTHORIZED)
 
+
+@csrf_protect
 @api_view(["GET"])
 #@permission_classes([IsAuthenticated])
-@csrf_protect
 def getCourses(request):
     if request.user.is_authenticated:
       post=available_Courses.objects.all()
       if request.method=="GET":
         serializer=available_Courses_registrationserialization(post, many=True)
         return Response(serializer.data,status=status.HTTP_302_FOUND)
-    return Response(status = status.HTTP_401_UNAUTHORIZED)
-    
+    return Response(status = status.HTTP_401_UNAUTHORIZED) 
+
+@csrf_protect   
 @api_view(["PUT"])
 #@permission_classes([IsAdminUser])
-@csrf_protect
 def updateCourses(request,id):
     if request.user.is_superuser:
        post=available_Courses.objects.get(id=id)
@@ -177,9 +175,9 @@ def updateCourses(request,id):
          return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(status = status.HTTP_401_UNAUTHORIZED)
 
+@csrf_protect
 @api_view(["DELETE"])
 #@permission_classes([IsAdminUser])
-@csrf_protect
 def deleteCourses(request,id):
     if request.user.is_superuser:
       post=available_Courses.objects.get(id=id)
@@ -191,8 +189,8 @@ def deleteCourses(request,id):
 
     
 # admin allow only tutor to add live class posts
-@api_view(["POST"])
 @csrf_protect
+@api_view(["POST"])
 @permission_classes([IsAdminUser])
 def tutorliveclasspost(request):
       if request.user.is_tutor: 
@@ -205,9 +203,8 @@ def tutorliveclasspost(request):
 
 
 # storing student attendance
-
-@api_view(["POST"])
 @csrf_protect
+@api_view(["POST"])
 def attendance(request):
     if request.user.is_authenticated: 
        student_email = request.data.get("student_email")
