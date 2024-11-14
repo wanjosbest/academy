@@ -120,10 +120,11 @@ def admin_logout(request):
       
 
     #user logout
-@csrf_protect
+
 @api_view(['POST'])
+@csrf_protect
 def tutor_logout(request):
-    if request.user.is_tutor:
+    if request.user.is_authenticated:
       if request.method == 'POST':
         try:
             # Delete the user's token to logout
@@ -206,15 +207,15 @@ def tutorliveclasspost(request):
 @csrf_protect
 @api_view(["POST"])
 def attendance(request):
-    if request.user.is_authenticated: 
-       student_email = request.data.get("student_email")
-       if request.user.email == student_email:
-          if request.method =="POST":
-             serializer = studentattendanceSerializer(data = request.data)
-             if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data,status = status.HTTP_201_CREATED)
-       return Response(status = status.HTTP_401_UNAUTHORIZED)
-    return Response(status = status.HTTP_401_UNAUTHORIZED)
+  if request.user.is_student: 
+     student_email = request.data.get("student_email")
+     if request.user.email == student_email:
+        if request.method =="POST":
+           serializer = studentattendanceSerializer(data = request.data)
+           if serializer.is_valid():
+              serializer.save()
+              return Response(serializer.data,status = status.HTTP_201_CREATED)
+     return Response(status = status.HTTP_401_UNAUTHORIZED)
+  return Response(status = status.HTTP_401_UNAUTHORIZED)
 
 
