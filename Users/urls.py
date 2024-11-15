@@ -1,5 +1,6 @@
 from django.urls import path
 from .import views
+from .views import RequestPasswordResetEmail, PasswordTokenCheck, SetNewPasswordView
 
 
 urlpatterns =[
@@ -26,4 +27,12 @@ urlpatterns =[
 
      # attendance
      path("api/student-attendance/",views.atten, name="studentattendance"),
+     # password change
+     path('api/change-password/', views.change_password, name='change_password'),
+
+     #password reset
+     path('request-reset-email/', RequestPasswordResetEmail.as_view(), name='request-reset-email'),
+     path('password-reset-confirm/<uidb64>/<token>/', PasswordTokenCheck.as_view(), name='password-reset-confirm'),
+     path('password-reset-complete/', SetNewPasswordView.as_view(), name='password-reset-complete'),
+
 ]
