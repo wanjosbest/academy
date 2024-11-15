@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-qmbh#-p*vph87n-erhd=rje&kyr+tt$^s7qy!x22bzcv*=m^he
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["https://academy-wv0t.onrender.com","127.0.0.1"]
 
 
 # Application definition
@@ -172,10 +172,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Email Backend Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Replace with your preferred backend
 
-EMAIL_PORT = 8000  # Replace with your email port
+EMAIL_PORT = 587 # Replace with your email port
 EMAIL_USE_TLS = False  # Set to False if your email server doesn't use TLS
-EMAIL_HOST = 'wanjos@gmail.com'  # Replace with your email host for gmail -> 'smtp.gmail.com'
-EMAIL_HOST_USER = 'wanjos'  # Replace with your email username
+EMAIL_HOST = 'smtp.gmail.com'  # Replace with your email host for gmail -> 'smtp.gmail.com'
+EMAIL_HOST_USER = 'josephwandiyahyel3@gmail.com'  # Replace with your email username
 EMAIL_HOST_PASSWORD = '0903620Wanjos@#$0903620Wanjos@#$'  # Replace with your email password
 
 
