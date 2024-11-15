@@ -48,7 +48,7 @@ class liveclass(models.Model):
      
 #student attendance 
 
-class studentattendance(models.Model):
+class studentatten(models.Model):
     student_email=models.EmailField(max_length=100, unique=True,null=True, verbose_name ="Student Email") 
     course_code = models.ForeignKey(available_Courses, related_name="courseattendance",on_delete=models.CASCADE,null=True)
     course_name = models.CharField(max_length = 50, null =True, verbose_name="Attendance Course Name")
@@ -61,6 +61,6 @@ class studentattendance(models.Model):
     class Meta:
         verbose_name="studentattendance"
         verbose_name_plural="Student Attendance"
-   
+ 
   
    

@@ -25,5 +25,5 @@ urlpatterns =[
      path("api/addliveclasspost/", views.tutorliveclasspost, name = "tutorliveclass"),
 
      # attendance
-     path("api/student-attendance/",views.attendance, name="studentattendance"),
+     path("api/student-attendance/",views.atten, name="studentattendance"),
 ]

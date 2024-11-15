@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User,available_Courses,liveclass,studentattendance
+from .models import User,available_Courses,liveclass,studentatten
 
 admin.site.register(User)
 
@@ -9,4 +9,4 @@ admin.site.register(available_Courses,available_CoursesAdmin)
 
 
 admin.site.register(liveclass)
-admin.site.register(studentattendance)
+admin.site.register(studentatten)

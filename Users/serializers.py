@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User,available_Courses,liveclass,studentattendance
+from .models import User,available_Courses,liveclass,studentatten
 from django.contrib.auth.password_validation import validate_password
 
 class REGAPISerializer(serializers.ModelSerializer):
@@ -30,5 +30,5 @@ class liveclassSerializer(serializers.ModelSerializer):
 
 class studentattendanceSerializer(serializers.ModelSerializer):
       class Meta:
-          model =studentattendance
+          model =studentatten
           fields =("student_email","course_code","course_name","status",)
